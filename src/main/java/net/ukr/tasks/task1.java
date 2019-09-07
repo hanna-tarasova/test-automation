@@ -1,3 +1,5 @@
+package net.ukr.tasks;
+
 import java.util.Scanner;
 public class task1 {
     public static void main(String[] args)  {
