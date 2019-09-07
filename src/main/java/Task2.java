@@ -23,14 +23,13 @@ public class Task2 {
         int[] array2 = {11, 54, 66, 0, 45, 5, 7, 8, 92, 91};
         // объявляем некий новый массив, пока пустой, но содержащий ровно столько элемнтов, сколько наш массив 2.
         // в новый массив мы будем вносить сначала числа из первого массива, которые выполняют условие - являются парными
-        int[] array3 = new int[10];
-        int[] array4 = new int[10];
+        int[] array3 = new int[array2.length];
         // показываем иизначальный массив
         System.out.println("Here is a second array: " + Arrays.toString(array2));
 
         //берём вспомогательные переменные - первая ячейка будущего массива, и последняя
         int count1 = 0;
-        int count2 = 9;
+        int count2 = array2.length-1;
         // перебираем элементы изначального массива
         for (int i = 0; i < array2.length; i++)
         {
@@ -50,17 +49,17 @@ public class Task2 {
         }
         //берём ещё раз вспомогательные переменные, чтобы отсортировать нечётные числа в порядок, указанный вначале
         int count3 = 0;
-        int count4 = 9;
-        for (int j = 0; j < array4.length; j++) {
+        int count4 = array2.length-1;
+        for (int j = 0; j < array2.length; j++) {
 
             if ((array3[j] % 2) == 0) {
-                array4[count3] = array3[j];
+                array2[count3] = array3[j];
                 count3++;
             } else {
-                array4[count4] = array3[j];
+                array2[count4] = array3[j];
                 count4--;
             }
         }
-        System.out.println("Here are even numbers, then odd numbers of second array: " + Arrays.toString(array4));
+        System.out.println("Here are even numbers, then odd numbers of second array: " + Arrays.toString(array2));
     }
 }
