@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+import static org.junit.Assert.*;
+
 public class methodsTest {
 
     int[] input = new int[]{1, 2, 3, 4, 5, -3, 2, 5, 7, 9, 0, 2, 3, 4, 1, -10, 12, 14};
@@ -18,11 +20,11 @@ public class methodsTest {
 
     @Test
     public void sortTest () {
-        Assert.assertEquals (Arrays.toString (output), Arrays.toString (at.sort (input)));
+        assertEquals (Arrays.toString (output), Arrays.toString (at.sort (input)));
     }
 
     @Test
     public void summaTest () {
-        Assert.assertEquals (output1, at.summa(input1));
+        assertEquals (output1, at.summa(input1));
     }
 }
