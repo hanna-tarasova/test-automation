@@ -19,10 +19,6 @@ public class Driver {
     }
 
 
-
-
-
-
     public static WebDriver getDriver (Browser browser, String arguments) {
         WebDriver driver;
 
@@ -31,40 +27,29 @@ public class Driver {
             switch (browser) {
                 case CHROME:
                     WebDriverManager.chromedriver ().setup ();
-                    ChromeOptions options = new ChromeOptions();
-                    options.addArguments("start-fullscreen");
+                    ChromeOptions options = new ChromeOptions ();
+                    options.addArguments ("start-fullscreen");
                     WebDriver driverChrome = new ChromeDriver (options);
                     return driverChrome;
 
-               case FIREFOX:
+                case FIREFOX:
                     WebDriverManager.firefoxdriver ().setup ();
                     WebDriver driverFirefox = new FirefoxDriver ();
-                    driverFirefox.manage().window().maximize();
+                    driverFirefox.manage ().window ().maximize ();
                     return driverFirefox;
 
 
-               case EDGE:
+                case EDGE:
                     WebDriverManager.edgedriver ().setup ();
                     WebDriver driverEdge = new EdgeDriver ();
                     return driverEdge;
-
 
 
             }
             ;
         }
         return null;
-    };
-    public static void main (String[] args) {
-        String baseURL = "https://www.ukr.net/ua/";
-
-        for (Browser browser : Browser.values ()) {
-            System.out.println (browser.toString ());
-            WebDriver driver = Driver.getDriver (browser, "full-screen");
-            driver.get (baseURL);
-            driver.quit ();
-        }
     }
 
-
-};
+    ;
+}
