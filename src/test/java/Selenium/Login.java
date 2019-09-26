@@ -13,8 +13,7 @@ public class Login {
 
     private final Object lock = new Object ();
     static WebDriver driver;
-    static Cookie cookie1;
-    static Cookie cookie2;
+    static Cookie cookie1, cookie2, cookie3;
 
 
 
@@ -37,11 +36,13 @@ public class Login {
         Thread.sleep (1000);
         driver.findElement (By.id ("id-p")).sendKeys ("tarasova" + Keys.ENTER);
         driver.findElement (By.cssSelector (".button")).click ();
-        cookie1 = (Cookie) driver.manage ().getCookies ();
+        cookie1 = (Cookie) driver.manage ().getCookieNamed ("freemail");
+        cookie2 = (Cookie) driver.manage ().getCookieNamed ("sid");
+        cookie3 = (Cookie) driver.manage ().getCookieNamed ("as");
+        System.out.println("Cookie as " + driver.manage ().getCookieNamed ("freemail"));
+        System.out.println("Cookie sid " + cookie2.toString ());
+//        System.out.println("Cookie freemail " + cookie3.toString ());
 
-
-
-        // System.out.println("Cookie " + cookie1.toString ());
         driver.manage ().deleteAllCookies ();
 
         driver.navigate ().to ("https://mail.ukr.net/");
@@ -55,9 +56,10 @@ public class Login {
         driver.navigate ().to ("https://mail.ukr.net/");
 
 
-         cookie2 = cookie1;
+        driver.manage().addCookie(new Cookie("freemail", cookie1.toString ()));
+        driver.manage().addCookie(new Cookie("sid", cookie2.toString ()));
+        //driver.manage().addCookie(new Cookie("as", cookie3.toString ()));
 
-        driver.manage ().addCookie (cookie2);
         Thread.sleep (6000);
     }
 
