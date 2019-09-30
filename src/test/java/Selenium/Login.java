@@ -52,10 +52,11 @@ public class Login {
         driver.navigate ().refresh ();
         driver.quit ();
         Thread.sleep (4000);
+
+
         driver = new ChromeDriver ();
         driver.navigate ().to ("https://mail.ukr.net/");
-
-
+        Thread.sleep (4000);
         driver.manage().addCookie(new Cookie("freemail", cookie1.toString ()));
         driver.manage().addCookie(new Cookie("sid", cookie2.toString ()));
         //driver.manage().addCookie(new Cookie("as", cookie3.toString ()));
