@@ -170,6 +170,62 @@ public class RegistrationTest {
 
 
     }
+    @Test
+    public void CheckTermsIsOpenedUa () {
+        driver.navigate ().to ("https://accounts.ukr.net/registration");
+        String winHandleBefore = driver.getWindowHandle ();
+        driver.findElement (By.linkText ("Угоди про конфіденційність")).click ();
+        for (String winHandle : driver.getWindowHandles ()) {
+            driver.switchTo ().window (winHandle);
+        }
+        String TermsUrl = driver.getWindowHandle ();
+        String Url = driver.switchTo ().window (TermsUrl).getCurrentUrl ();
+        WebElement Name = driver.findElement (By.xpath ("/html/body/table/tbody/tr[2]/td/div/h2"));
+
+
+        Assert.assertEquals ("https://www.ukr.net/terms/", Url);
+        Assert.assertEquals ("Угода про конфіденційність", Name.getAttribute ("textContent"));
+    }
+
+
+
+
+
+
+    @Test
+    public void CheckTermsIsOpenedRu () {
+        driver.navigate ().to ("https://accounts.ukr.net/registration");
+        driver.findElement (By.xpath ("/html/body/div/div/header/div/div[2]/button[2]/span[1]")).click ();
+        String winHandleBefore = driver.getWindowHandle ();
+        driver.findElement (By.linkText ("Соглашением о конфиденциальности")).click ();
+        for (String winHandle : driver.getWindowHandles ()) {
+            driver.switchTo ().window (winHandle);
+        }
+        String TermsUrl = driver.getWindowHandle ();
+        String Url = driver.switchTo ().window (TermsUrl).getCurrentUrl ();
+        WebElement Name = driver.findElement (By.xpath ("/html/body/table/tbody/tr[2]/td/div/h2"));
+
+        Assert.assertEquals ("https://www.ukr.net/ru/terms/", Url);
+        Assert.assertEquals ("Соглашение о конфиденциальности", Name.getAttribute ("textContent"));
+    }
+
+
+        @Test
+        public void CheckLogoIsCorrect ()
+        {
+            driver.navigate ().to ("https://accounts.ukr.net/registration");
+            String originalW = driver.getWindowHandle();
+            driver.findElement (By.linkText ("Угоди про конфіденційність")).click ();
+            for (String winHandle : driver.getWindowHandles ()) {
+                driver.switchTo ().window (winHandle);
+            }
+            String Logo = driver.findElement(By.xpath ("/html/body/table/tbody/tr[1]/td/div/a/img")).getAttribute ("currentSrc");
+
+
+            Assert.assertEquals ("https://www.ukr.net/img/terms-logo-ua.gif", Logo);
+        }
+
+
 };
 
 
