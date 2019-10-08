@@ -1,9 +1,9 @@
 package Selenium;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,13 +15,13 @@ public class RegistrationTest {
 
     static WebDriver driver;
 
-    @BeforeClass
-    public static void setup () {
+    @Before
+    public void setup () {
         WebDriverManager.chromedriver ().setup ();
         driver = new ChromeDriver ();
     }
-    @AfterClass
-    public static void cleanup () {
+    @After
+    public  void cleanup () {
         driver.quit ();
     }
 
@@ -173,35 +173,37 @@ public class RegistrationTest {
     public void CheckTermsIsOpenedUa () {
 
         driver.navigate ().to ("https://accounts.ukr.net/registration");
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+
         String winHandleBefore1 = driver.getWindowHandle ();
 
         driver.findElement (By.linkText ("Угоди про конфіденційність")).click ();
-        //String newW = wait.until(N(winHandleBefore1));
-        //driver.switchTo().window(newW);
+
 
 
         for (String winHandle : driver.getWindowHandles ()) {
             driver.switchTo ().window (winHandle);
         }
         String TermsUrl = driver.getWindowHandle ();
-        String Url = driver.switchTo ().window (TermsUrl).getCurrentUrl ();
+        String Url = driver.switchTo().window(TermsUrl).getCurrentUrl ();
         WebElement Name = driver.findElement (By.cssSelector ("h2"));
+
 
 
         Assert.assertEquals ("https://www.ukr.net/terms/", Url);
         Assert.assertEquals ("Угода про конфіденційність", Name.getAttribute ("textContent"));
+        driver.close();
+        driver.switchTo().window(winHandleBefore1);
 
-        driver.close ();
+
+
     }
-
-
 
 
 
 
     @Test
     public void CheckTermsIsOpenedRu () {
+
         driver.navigate ().to ("https://accounts.ukr.net/registration");
         WebDriverWait wait = new WebDriverWait(driver, 60);
 
@@ -216,13 +218,16 @@ public class RegistrationTest {
         WebElement Name = driver.findElement (By.cssSelector ("h2"));
         Assert.assertEquals ("https://www.ukr.net/ru/terms/", Url2);
         Assert.assertEquals ("Соглашение о конфиденциальности", Name.getAttribute ("textContent"));
-           driver.close ();
+
+        driver.close ();
+        driver.switchTo ().window (winHandleBefore2);
     }
 
 
         @Test
         public void CheckLogoIsCorrect ()
         {
+
             driver.navigate ().to ("https://accounts.ukr.net/registration");
             WebDriverWait wait = new WebDriverWait(driver, 60);
 
@@ -235,8 +240,9 @@ public class RegistrationTest {
 
 
             Assert.assertEquals ("https://www.ukr.net/img/terms-logo-ua.gif", Logo);
-            driver.switchTo().window(originalW);
             driver.close ();
+            driver.switchTo().window(originalW);
+
         }
 
 
@@ -257,6 +263,7 @@ public class RegistrationTest {
 
             Assert.assertEquals ("https://mail.ukr.net/terms_uk.html", Url);
             Assert.assertEquals ("Угода про використання електронної пошти FREEMAIL (mail.ukr.net)", Name.getAttribute ("textContent"));
+            driver.switchTo().window(winHandleBefore);
             driver.close ();
     }
 
@@ -268,7 +275,7 @@ public class RegistrationTest {
 
             String winHandleBefore = driver.getWindowHandle ();
             driver.findElement (By.xpath ("//button[2]")).click ();
-            driver.findElement (By.linkText (" Соглашения об использовании электронной почты FREEMAIL (mail.ukr.net)")).click ();
+            driver.findElement (By.linkText ("Соглашения об использовании электронной почты FREEMAIL (mail.ukr.net)")).click ();
             for (String winHandle : driver.getWindowHandles ()) {
             driver.switchTo ().window (winHandle);
             }
@@ -280,6 +287,7 @@ public class RegistrationTest {
         Assert.assertEquals ("https://mail.ukr.net/terms_ru.html", Url);
         Assert.assertEquals ("Соглашение об использовании электронной почты FREEMAIL (mail.ukr.net)", Name.getAttribute ("textContent"));
         driver.close ();
+        driver.switchTo().window(winHandleBefore);
     }
 
     @Test
@@ -301,6 +309,7 @@ public class RegistrationTest {
         Assert.assertEquals ("https://mail.ukr.net/terms_en.html", Url);
         Assert.assertEquals ("Угода про використання електронної пошти FREEMAIL (mail.ukr.net)", Name.getAttribute ("textContent"));
         driver.close ();
+        driver.switchTo().window(winHandleBefore);
     }
 
 };
