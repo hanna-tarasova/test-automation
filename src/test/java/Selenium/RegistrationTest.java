@@ -1,6 +1,7 @@
 package Selenium;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -8,7 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class RegistrationTest {
 
@@ -19,13 +20,12 @@ public class RegistrationTest {
         WebDriverManager.chromedriver ().setup ();
         driver = new ChromeDriver ();
     }
-//    @AfterClass
-//    public static void cleanup () {
-//        driver.quit ();
-//    }
+    @AfterClass
+    public static void cleanup () {
+        driver.quit ();
+    }
 
-
-    @Test
+    /*@Test
     public void lang () {
         driver.navigate ().to ("https://accounts.ukr.net/registration");
         WebElement lang = driver.findElement (By.className ("header__lang-long-name"));
@@ -168,23 +168,31 @@ public class RegistrationTest {
         System.out.println ("What text of unfilled fields: " + driver.findElement (By.xpath ("/html/body/div/div/main/form/section[6]/div/div/p")).getText ());
 
 
-
-    }
+    }*/
     @Test
     public void CheckTermsIsOpenedUa () {
+
         driver.navigate ().to ("https://accounts.ukr.net/registration");
-        String winHandleBefore = driver.getWindowHandle ();
+        WebDriverWait wait = new WebDriverWait(driver, 60);
+        String winHandleBefore1 = driver.getWindowHandle ();
+
         driver.findElement (By.linkText ("Угоди про конфіденційність")).click ();
+        //String newW = wait.until(N(winHandleBefore1));
+        //driver.switchTo().window(newW);
+
+
         for (String winHandle : driver.getWindowHandles ()) {
             driver.switchTo ().window (winHandle);
         }
         String TermsUrl = driver.getWindowHandle ();
         String Url = driver.switchTo ().window (TermsUrl).getCurrentUrl ();
-        WebElement Name = driver.findElement (By.xpath ("/html/body/table/tbody/tr[2]/td/div/h2"));
+        WebElement Name = driver.findElement (By.cssSelector ("h2"));
 
 
         Assert.assertEquals ("https://www.ukr.net/terms/", Url);
         Assert.assertEquals ("Угода про конфіденційність", Name.getAttribute ("textContent"));
+
+        driver.close ();
     }
 
 
@@ -195,18 +203,20 @@ public class RegistrationTest {
     @Test
     public void CheckTermsIsOpenedRu () {
         driver.navigate ().to ("https://accounts.ukr.net/registration");
-        driver.findElement (By.xpath ("/html/body/div/div/header/div/div[2]/button[2]/span[1]")).click ();
-        String winHandleBefore = driver.getWindowHandle ();
-        driver.findElement (By.linkText ("Соглашением о конфиденциальности")).click ();
-        for (String winHandle : driver.getWindowHandles ()) {
-            driver.switchTo ().window (winHandle);
-        }
-        String TermsUrl = driver.getWindowHandle ();
-        String Url = driver.switchTo ().window (TermsUrl).getCurrentUrl ();
-        WebElement Name = driver.findElement (By.xpath ("/html/body/table/tbody/tr[2]/td/div/h2"));
+        WebDriverWait wait = new WebDriverWait(driver, 60);
 
-        Assert.assertEquals ("https://www.ukr.net/ru/terms/", Url);
+        driver.findElement (By.cssSelector (".header__lang > button:nth-of-type(2)")).click ();
+        String winHandleBefore2 = driver.getWindowHandle ();
+        driver.findElement (By.linkText ("Соглашением о конфиденциальности")).click ();
+        for (String winHandle2 : driver.getWindowHandles ()) {
+            driver.switchTo ().window (winHandle2);
+        }
+        String TermsUrl2 = driver.getWindowHandle ();
+        String Url2 = driver.switchTo ().window (TermsUrl2).getCurrentUrl ();
+        WebElement Name = driver.findElement (By.cssSelector ("h2"));
+        Assert.assertEquals ("https://www.ukr.net/ru/terms/", Url2);
         Assert.assertEquals ("Соглашение о конфиденциальности", Name.getAttribute ("textContent"));
+           driver.close ();
     }
 
 
@@ -214,17 +224,84 @@ public class RegistrationTest {
         public void CheckLogoIsCorrect ()
         {
             driver.navigate ().to ("https://accounts.ukr.net/registration");
+            WebDriverWait wait = new WebDriverWait(driver, 60);
+
             String originalW = driver.getWindowHandle();
             driver.findElement (By.linkText ("Угоди про конфіденційність")).click ();
             for (String winHandle : driver.getWindowHandles ()) {
                 driver.switchTo ().window (winHandle);
             }
-            String Logo = driver.findElement(By.xpath ("/html/body/table/tbody/tr[1]/td/div/a/img")).getAttribute ("currentSrc");
+            String Logo = driver.findElement(By.cssSelector ("img")).getAttribute ("currentSrc");
 
 
             Assert.assertEquals ("https://www.ukr.net/img/terms-logo-ua.gif", Logo);
+            driver.switchTo().window(originalW);
+            driver.close ();
         }
 
+
+        @Test
+        public void CheckTermsOfUseIsOpenedUa () {
+            driver.navigate ().to ("https://accounts.ukr.net/registration");
+            WebDriverWait wait = new WebDriverWait(driver, 60);
+
+            String winHandleBefore = driver.getWindowHandle ();
+            driver.findElement (By.linkText ("Угоди про використання електронної пошти FREEMAIL (mail.ukr.net)")).click ();
+            for (String winHandle : driver.getWindowHandles ()) {
+                driver.switchTo ().window (winHandle);
+            }
+            String TermsUrl = driver.getWindowHandle ();
+            String Url = driver.switchTo ().window (TermsUrl).getCurrentUrl ();
+            WebElement Name = driver.findElement (By.cssSelector ("h3"));
+
+
+            Assert.assertEquals ("https://mail.ukr.net/terms_uk.html", Url);
+            Assert.assertEquals ("Угода про використання електронної пошти FREEMAIL (mail.ukr.net)", Name.getAttribute ("textContent"));
+            driver.close ();
+    }
+
+        @Test
+        public void CheckTermsOfUseIsOpenedRu () {
+
+            driver.navigate ().to ("https://accounts.ukr.net/registration");
+            WebDriverWait wait = new WebDriverWait(driver, 60);
+
+            String winHandleBefore = driver.getWindowHandle ();
+            driver.findElement (By.xpath ("//button[2]")).click ();
+            driver.findElement (By.linkText (" Соглашения об использовании электронной почты FREEMAIL (mail.ukr.net)")).click ();
+            for (String winHandle : driver.getWindowHandles ()) {
+            driver.switchTo ().window (winHandle);
+            }
+            String TermsUrl = driver.getWindowHandle ();
+            String Url = driver.switchTo ().window (TermsUrl).getCurrentUrl ();
+            WebElement Name = driver.findElement (By.cssSelector ("h3"));
+
+
+        Assert.assertEquals ("https://mail.ukr.net/terms_ru.html", Url);
+        Assert.assertEquals ("Соглашение об использовании электронной почты FREEMAIL (mail.ukr.net)", Name.getAttribute ("textContent"));
+        driver.close ();
+    }
+
+    @Test
+    public void CheckTermsOfUseIsOpenedEng () {
+        driver.navigate ().to ("https://accounts.ukr.net/registration");
+        WebDriverWait wait = new WebDriverWait(driver, 60);
+
+        String winHandleBefore = driver.getWindowHandle ();
+        driver.findElement (By.xpath ("//button[3]")).click ();
+        driver.findElement (By.linkText ("the FREEMAIL (mail.ukr.net) Terms of Service")).click ();
+        for (String winHandle : driver.getWindowHandles ()) {
+            driver.switchTo ().window (winHandle);
+        }
+        String TermsUrl = driver.getWindowHandle ();
+        String Url = driver.switchTo ().window (TermsUrl).getCurrentUrl ();
+        WebElement Name = driver.findElement (By.cssSelector ("h3"));
+
+
+        Assert.assertEquals ("https://mail.ukr.net/terms_en.html", Url);
+        Assert.assertEquals ("Угода про використання електронної пошти FREEMAIL (mail.ukr.net)", Name.getAttribute ("textContent"));
+        driver.close ();
+    }
 
 };
 
