@@ -1,18 +1,18 @@
 package Selenium;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -20,18 +20,36 @@ import java.util.ArrayList;
 
 
 public class RegistrationTest extends Listener{
-WebDriver driver;
-    private static EventFiringWebDriver edr;
+
+    public static final String USERNAME = "bsuser44998";
+    public static final String AUTOMATE_KEY = "vZMrsayQZcuYXWbbhAvE";
+    public static final String URL = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub";
+
+    private RemoteWebDriver driver;
+    //private static EventFiringWebDriver edr;
+
     private static WebDriverWait wait;
 
 
-    @Before
-    public void setup () {
 
-        WebDriverManager.chromedriver ().setup ();
-        driver = new ChromeDriver ();
-        driver = new EventFiringWebDriver (driver);
-        ((EventFiringWebDriver) driver).register(new Listener());
+    @Before
+    public void setup () throws MalformedURLException {
+
+        DesiredCapabilities caps = new DesiredCapabilities();
+        caps.setCapability("browserName", "android");
+        caps.setCapability("device", "Samsung Galaxy S9 Plus");
+        caps.setCapability("realMobile", "true");
+        caps.setCapability("os_version", "9.0");
+        caps.setCapability("name", "Bstack-[Java] Sample Test");
+
+         driver = new RemoteWebDriver(new URL (URL), caps);
+        // WebDriverManager.chromedriver ().setup ();
+        // driver = new ChromeDriver ();
+       // driver = new EventFiringWebDriver (driver);
+       // ((EventFiringWebDriver) driver).register(new Listener());
+       // driver = new EventFiringWebDriver (driver);
+        //((EventFiringWebDriver) driver).register(new Listener());
+
 
         wait = new WebDriverWait(driver, 5);
 
